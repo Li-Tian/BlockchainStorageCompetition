@@ -1,2 +1,2 @@
 # BlockchainStorageCompetition
-Blockchain storage competition by NEO
+Blockchain storage competition 2018 by NEO
