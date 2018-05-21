@@ -25,9 +25,70 @@ namespace neo.ngd.bsc
 
         static void Main(string[] args)
         {
+            if (args.Length == 1 && ("--clean".Equals(args[0]) || "-c".Equals(args[0])))
+            {
+                Cleanup();
+            }
+            else if (args.Length == 1 && ("--run".Equals(args[0]) || "-r".Equals(args[0])))
+            {
+                RunTheWholeTest();
+            }
+            else if (args.Length == 1 && ("--try".Equals(args[0]) || "-t".Equals(args[0])))
+            {
+                TryAPI();
+            }
+            else
+            {
+                Console.WriteLine("Usage:");
+                Console.WriteLine("  to try running a very short test");
+                Console.WriteLine("    \"bsc -t\" or \"bsc --try\"");
+                Console.WriteLine("  to run a full test");
+                Console.WriteLine("    \"bsc -r\" or \"bsc --run\"");
+                Console.WriteLine("  to clean up");
+                Console.WriteLine("    \"bsc -c\" or \"bsc --clean\"");
+            }
+        }
+
+        static void Cleanup()
+        {
+            DB db = DBFactory.GetInstance();
+            Console.WriteLine(String.Format("Clean up for {0}...", db.GetName()));
+            db.Cleanup();
+        }
+
+        static void TryAPI()
+        {
+            DB db = DBFactory.GetInstance();
+            Console.WriteLine(String.Format("Try API for {0}...", db.GetName()));
+            Console.WriteLine(String.Format("Description     : {0}", db.GetDescription()));
+            Console.WriteLine(String.Format("Author          : {0}", db.GetAuthorName()));
+            Console.WriteLine(String.Format("Email           : {0}", db.GetAuthorEmail()));
+            db.Init();
+
+            Random rnd = new Random();
+            // create test data
+            byte[] key = GenerateRandomKey(rnd);
+            byte[] value = GenerateRandomValue(rnd);
+            // write into database
+            db.Put(key, value);
+            if (value.Equals(db.Get(key)))
+            {
+                Console.WriteLine("Check result    : SUCCEEDED");
+            }
+            else
+            {
+                Console.WriteLine("Check result    : FAILED");
+            }
+            db.Cleanup();
+        }
+
+        static void RunTheWholeTest()
+        {
             Console.WriteLine("Blockchain storage competition 2018 by NEO...");
 
             DB db = DBFactory.GetInstance();
+            db.Init(); // Initialize db before counting the time
+
             Console.WriteLine(String.Format("Write {0:N0} records into {1}.", TEST_DATA_AMOUNT, db.GetName()));
             Random rnd = new Random();
 

@@ -8,6 +8,15 @@ namespace neo.ngd.bsc.db
 {
     internal class DummyDB : DB
     {
+        public void Init()
+        {
+            // Nothing to initialize.
+        }
+
+        public void Cleanup()
+        {
+            // Nothing to clean.
+        }
         public byte[] Get(byte[] key)
         {
             // get the value of the key. return null if not found
@@ -35,5 +44,6 @@ namespace neo.ngd.bsc.db
         {
             return "DummyDB just do nothing.";
         }
+
     }
 }

@@ -12,6 +12,16 @@ namespace neo.ngd.bsc.db
     {
         private Dictionary<byte[], byte[]> dictionary = new Dictionary<byte[], byte[]>();
 
+        public void Init()
+        {
+            // Nothing to initialize.
+        }
+
+        public void Cleanup()
+        {
+            // Nothing to clean.
+        }
+
         public byte[] Get(byte[] key)
         {
             if (dictionary.ContainsKey(key))
